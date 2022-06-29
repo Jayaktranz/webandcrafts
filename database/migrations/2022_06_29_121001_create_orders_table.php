@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->string('phone_number')->nullable();
             $table->timestamp('order_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

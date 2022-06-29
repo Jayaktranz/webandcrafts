@@ -32,13 +32,16 @@
                             <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Product Image') }}</label>
 
                             <div class="col-md-6">
-                                <input id="product_image" type="file" name="image" accept="image/*" class="form-control @error('image') is-invalid @enderror" name="name" autocomplete="name">
-
+                                <input id="product_image" type="file" name="image" accept="image/*" class="form-control @error('image') is-invalid @enderror"  onchange="previewFile(this);">
                                 @error('image')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                <img id="previewImg" 
+                                 src="" 
+                                 width="70" height="70"
+                                 alt="Image Preview" />
                             </div>
                         </div>
 
@@ -91,3 +94,22 @@
     </div>
 </div>
 @endsection
+
+@push('custom-scripts')
+    <script>
+function previewFile(input){
+            if ($("input[type=file]")[0].files.length === 0) {
+                $("#previewImg").attr("src", '');
+            } else {
+            var file = $("input[type=file]").get(0).files[0];
+            if(file){
+            var reader = new FileReader();
+            reader.onload = function(){
+            $("#previewImg").attr("src", reader.result);
+            }
+             reader.readAsDataURL(file);
+             }
+           }
+    }
+    </script>
+@endpush

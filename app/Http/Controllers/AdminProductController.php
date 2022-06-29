@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminProductController extends Controller
@@ -33,7 +34,7 @@ class AdminProductController extends Controller
                     return isset($products->price)? $products->price :'-' ;
                 })
                 ->addColumn('action',function($products){
-                    $actionBtn = '<a href="'.route('admin.products.edit',['product'=>$products->id]).'" class="edit btn-lg"><i class="fa fa-edit"></i></a>';
+                    $actionBtn = '<a href="'.route('admin.products.edit',['product'=>$products->id]).'" class="edit  btn-lg"><i class="fa fa-edit"></i></a>';
                     $actionBtn .= '<a href="javascript:void(0)" data-sid="'.$products->id.'" class="delete btn btn-danger btn-sm newtrash"><i class="fa fa-trash"></i></a>';
                     return $actionBtn;
                 })
@@ -95,7 +96,7 @@ class AdminProductController extends Controller
      */
     public function show($id)
     {
-        //
+      
     }
 
     /**
@@ -106,7 +107,13 @@ class AdminProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product_details = Product::with('category')->find((int) $id);
+        $categries = Category::get();
+        if(isset($product_details)){
+            
+            return view('admin.product.edit', compact('categries','product_details'));
+
+        }
     }
 
     /**
@@ -116,9 +123,31 @@ class AdminProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        //
+        $data = array();
+        $productImagePath = '';
+        $data = array(
+            'name' => $request->input('name'),
+            'slug' => Str::slug($request->input('name')),
+            'category_id' => $request->input('category_id'),
+            'price' => floatval($request->input('price')),
+        );
+
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $productimage = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('/products/images/'), $productimage);
+            $productImagePath = 'products/images/'.$productimage;
+            $data['image'] = $productImagePath;
+        }
+       
+        $product = Product::where(['id' => $id])
+        ->update($data);
+
+        return redirect()
+        ->route('admin.products.index')
+        ->with('success', 'Product details of '.$request->input('name').' updated succesfully.');
     }
 
     /**
@@ -127,8 +156,19 @@ class AdminProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $validator=Validator::make($request->all(),[
+                'statsid' => 'required|exists:products,id',
+            ],[ ]);
+            if($validator->fails()){
+                return response()->json(['status'=>'invalid']);
+            }else{
+                 $product = Product::find((int) $id);   
+                 $product->delete();
+                 return response()->json(['status' => 'success']);
+            }
+        }
     }
 }

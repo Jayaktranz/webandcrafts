@@ -56,7 +56,7 @@
                             <a class="nav-link" href="{{ route('admin.dashboard') }}">{{ __(' Dashboard') }}</a>
                            </li>
                            <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.orders.create') }}">{{ __(' Orders') }}</a>
+                            <a class="nav-link" href="{{ route('admin.orders.index') }}">{{ __(' Orders') }}</a>
                            </li>
                            <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.products.index') }}">{{ __('Products') }}</a>

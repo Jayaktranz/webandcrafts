@@ -24,6 +24,7 @@ Route::prefix('Administrator')->name('admin.')->group(function(){
     Route::middleware('auth')->group(function(){
         Route::get('dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
         Route::resource('products', ProductController::class);
+        Route::resource('categories', CategoryController::class)->only(['store']);
         Route::resource('orders', OrderController::class);
     });
 

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class AdminCategoryController extends Controller
 {
@@ -34,7 +37,22 @@ class AdminCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $validator=Validator::make($request->all(),[
+                'categoryName' => 'required|string|unique:categories,name',
+            ],[ ]);
+            if($validator->fails()){
+                return response()->json(['status'=>'invalid', 'errors'=>$validator->errors()->getMessages()]);
+            }else{
+                 $category = Category::create(
+                     [
+                         'name' => $request->input('categoryName'),
+                         'slug' => Str::slug($request->input('categoryName'))
+                     ]
+                 );   
+                 return response()->json(['status' => 'success']);
+            }
+        }
     }
 
     /**

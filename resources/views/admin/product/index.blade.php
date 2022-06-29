@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12 float-right">
             <a href="{{ route('admin.products.create') }}" class="btn btn-success float-right">Add Product</a>
-            <button class="btn btn-danger float-right">Add Category</button>
+            <button class="btn btn-danger float-right" id="categoryModalBtn">Add Category</button>
         </div>
         <div class="col-md-12">
             <div class="row">
@@ -36,6 +36,7 @@
         </div>
     </div>
 </div>
+@Include('admin.category.add_category')
 @endsection
 @push('custom-scripts')
     <script>
@@ -58,9 +59,60 @@
             },
         ] ,
         "fnDrawCallback": function(){
+            $('.newtrash').on("click",function(){
+                $statsID=$(this).data('sid');
+                if(confirm('Are you sure want to delete this product ?')){
+                    $url='{{ route("admin.products.destroy",":id") }}';
+                    $url=$url.replace(':id',$statsID);
+                    $.ajax({
+                        'url':$url,
+                        'type':'DELETE',
+                        'data':{ 'statsid':$statsID, '_token':'{{ csrf_token() }}' },
+                        'dataType':'JSON',
+                        success: function(reponse){
+                         if(reponse.status === 'success')
+                         table.draw();
+                        },
+                        error: function (xhr) {
+                         console.log(xhr.responseText);
+                        }
+                    });
+                }
+
+            });
            
         },
     });
+
+    $('#categoryModalBtn').on('click', function() {
+      $('#categoryModal').modal('show');
+    });
+
+    $(document).on('click', '#addCategory', function(){
+        $('#error_email').html('');
+        var categoryName= $('#category_name').val();
+        $.ajax({
+               'url':"{{ route('admin.categories.store') }}",
+                        'type':'POST',
+                        'data':{ 'categoryName':categoryName},
+                        'dataType':'JSON',
+                        success: function(response){
+                          if(response.status === 'success')
+                          {
+                            $('#category_name').val('');
+                            $('#categoryModal').modal('hide');
+                            window.location.reload;
+                          }else if(response.status === 'invalid'){
+                            $('#error_email').html('<p>'+ response.errors.categoryName[0] + '</p>');
+                          }   
+                        },
+                        error: function (xhr) {
+                         console.log(xhr.responseText);
+                        }
+                    });
+
+    });
+
     });
     </script>
 @endpush

@@ -19,7 +19,7 @@ class UserFactory extends Factory
             'name' => 'Super Admin',
             'email' => 'admin@wacadmin.com',
             'email_verified_at' => now(),
-            'password' =>Hash::make('password'), // password
+            'password' =>Hash::make('P@ssw0rd'), // password
             'remember_token' => Str::random(10),
         ];
     }
