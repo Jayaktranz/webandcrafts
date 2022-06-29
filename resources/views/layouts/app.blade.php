@@ -10,12 +10,12 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    {{-- <script src="{{ asset('js/app.js') }}" ></script> --}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -41,9 +41,9 @@
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
+                                </li> --}}
                             @endif
 
                             @if (Route::has('register'))
@@ -52,6 +52,15 @@
                                 </li>
                             @endif
                         @else
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">{{ __(' Dashboard') }}</a>
+                           </li>
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.orders.create') }}">{{ __(' Orders') }}</a>
+                           </li>
+                           <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.products.index') }}">{{ __('Products') }}</a>
+                           </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -80,4 +89,6 @@
         </main>
     </div>
 </body>
+<script src="{{ asset('js/app.js') }}" ></script>
+@stack('custom-scripts')
 </html>

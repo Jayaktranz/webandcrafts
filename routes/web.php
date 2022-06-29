@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminCategoryController as CategoryController;
+use App\Http\Controllers\AdminProductController as ProductController;
+use App\Http\Controllers\AdminOrderController as OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +18,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', 'login');
+
+Route::prefix('Administrator')->name('admin.')->group(function(){
+
+    Route::middleware('auth')->group(function(){
+        Route::get('dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
+        Route::resource('products', ProductController::class);
+        Route::resource('orders', OrderController::class);
+    });
+
+});
 
 Auth::routes(['register' => false]);
 
