@@ -218,8 +218,7 @@ class AdminOrderController extends Controller
             //     // }
 
             // }  
-            // $request->session()->put('myCartBase', $seSSArr); 
-           // dd($request->session()->get('myCartBase'));                    
+            // $request->session()->put('myCartBase', $seSSArr);                     
             $view = view('admin.order.selected_order', compact('selectedProductDatas'))->render();
 
             return response()->json([
