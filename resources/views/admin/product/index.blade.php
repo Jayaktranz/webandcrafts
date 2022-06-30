@@ -36,7 +36,7 @@
         </div>
     </div>
 </div>
-@Include('admin.category.add_category')
+@include('admin.category.add_category')
 @endsection
 @push('custom-scripts')
     <script>

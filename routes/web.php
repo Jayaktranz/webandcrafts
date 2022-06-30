@@ -26,6 +26,8 @@ Route::prefix('Administrator')->name('admin.')->group(function(){
         Route::resource('products', ProductController::class);
         Route::resource('categories', CategoryController::class)->only(['store']);
         Route::resource('orders', OrderController::class);
+        Route::post('orderSelectedProducts', [OrderController::class, 'getOrderSelectedProducts'])->name('selectedprods');
+        Route::post('orderChangeQuantity', [OrderController::class, 'changeQuantity'])->name('changeQuantity');
     });
 
 });
