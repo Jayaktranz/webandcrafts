@@ -11,6 +11,6 @@
 8) run 'php artisan serve
 9) Access the application by running URL http://127.0.0.1:8000/ in web browser
 10) The Login credential is given below
-admin@wacadmin.com
-P@ssw0rd
+email : admin@wacadmin.com
+password : P@ssw0rd
    
