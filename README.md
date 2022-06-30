@@ -1,5 +1,5 @@
 <strong>Steps for installation of the project</strong>
-(Requirements php version minimum 7.4 and composer and node js)
+(Requirements: php version minimum 7.4. composer and node js is required)
 1) clone the repo via ' git clone https://github.com/Jayaktranz/webandcrafts.git'
 2) change to the cloned directory via 'cd' command
 3) under base path of this laravel project run 'Composer install' or 'Composer update' via command prompt.
