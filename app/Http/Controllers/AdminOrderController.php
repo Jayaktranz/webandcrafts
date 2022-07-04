@@ -69,7 +69,7 @@ class AdminOrderController extends Controller
     {
         $products = (array)$request->input('prodid');
         $quantities = (array)$request->input('quantity');
-        $row = Order::latest()->first();
+        $row = Order::withTrashed()->latest()->first();
         $OrderId = 'WAC';
         $OrderId.= str_pad((isset($row) ?intval($row->id+1):1 ), 8, '0', STR_PAD_LEFT);
         $amount = 0;
